@@ -61,30 +61,53 @@ void selection()
 		//find 5 random winners
 		for (int i = 0; i < 5; i++)
 		{
-			bool isSame = false;
-			string temp = studentNameVector[rand() % studentNameVector.size()];
-
-			for (int j = 0; j < 5; j++)
-			{
-				if (temp == tempStudentArray[j])
-				{
-					isSame = true;
-					break;
+			tempStudentArray[i] = studentNameVector[rand() % studentNameVector.size()];
+			//cout << "Generate a name: " << tempStudentArray[i] << endl;
+			if (i == 0) {
+				while (tempStudentArray[i] == tempStudentArray[1] || tempStudentArray[i] == tempStudentArray[2] || tempStudentArray[i] == tempStudentArray[3] || tempStudentArray[i] == tempStudentArray[4]) {
+					tempStudentArray[i] = studentNameVector[rand() % studentNameVector.size()];
 				}
 			}
-
-
-
-			if (isSame != true) {
-				tempStudentArray[i] = temp;
-				cout << tempStudentArray[i] << endl;
+			else if (i == 1) {
+				while (tempStudentArray[i] == tempStudentArray[0] || tempStudentArray[i] == tempStudentArray[2] || tempStudentArray[i] == tempStudentArray[3] || tempStudentArray[i] == tempStudentArray[4]) {
+					tempStudentArray[i] = studentNameVector[rand() % studentNameVector.size()];
+				}
 			}
-			else {
-				temp = studentNameVector[rand() % studentNameVector.size()];
+			else if (i == 2) {
+				while (tempStudentArray[i] == tempStudentArray[0] || tempStudentArray[i] == tempStudentArray[1] || tempStudentArray[i] == tempStudentArray[3] || tempStudentArray[i] == tempStudentArray[4]) {
+					tempStudentArray[i] = studentNameVector[rand() % studentNameVector.size()];
+				}
 			}
-			//cout << tempStudentArray[i] << endl;
+			else if (i == 3) {
+				while (tempStudentArray[i] == tempStudentArray[0] || tempStudentArray[i] == tempStudentArray[1] || tempStudentArray[i] == tempStudentArray[2] || tempStudentArray[i] == tempStudentArray[4]) {
+					tempStudentArray[i] = studentNameVector[rand() % studentNameVector.size()];
+				}
+			}
+			else if (i == 4) {
+				//Cause problems when names are less than 5
+				if (student_names && student_names.peek() == EOF) {
+					//cout << "Only have " << (i - 1) << " people in the file!" << endl;
+					tempStudentArray[i] = "";
+				}
+				else {
+					while (tempStudentArray[i] == tempStudentArray[0] || tempStudentArray[i] == tempStudentArray[1] || tempStudentArray[i] == tempStudentArray[2] || tempStudentArray[i] == tempStudentArray[3]) {
+						tempStudentArray[i] = studentNameVector[rand() % studentNameVector.size()];
+					}
+				}
+
+			}
 		}
+			
+				
+									   						 					  
+		for (int i = 0; i < 5; i++) {
+			cout << tempStudentArray[i] << endl;
+		}
+
+
 		
+		
+
 
 		//step 1: prizeVector[distrForPrizes]; 
 		//step 2: check if the called prize is in the temp array
@@ -109,3 +132,23 @@ void selection()
 		//return 5 winners & 5 prizes
 	}
 }
+
+/*string pickAWinner(vector<string> vec, string array[], int index)
+{
+	bool isSame = false;
+
+	do
+	{
+		array[index] = vec[rand() % vec.size()];
+
+		for (int i = 0; i < array->size(); i++)
+		{
+			if ((index != i) && array[index] == array[i])
+				isSame = true;
+		}
+
+	} while (isSame == true);
+
+	if (isSame == false)
+		return array[index];
+}*/
