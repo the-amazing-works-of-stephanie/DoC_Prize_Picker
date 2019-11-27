@@ -3,6 +3,7 @@
 #include "Header.h"
 #include <iostream>
 #include <string>
+#include <ctime>
 
 void selection();
 
@@ -10,11 +11,10 @@ using namespace std;
 
 int main()
 {
+	unsigned seed = time(0); 
+
+	srand(seed); 
+
 	//call the selection() function
 	selection(); 
-
-	cout << "\nmain"; 
-
-    //print out 5 random students from student_names
-	//print out 5 random prizes from prizes
 }

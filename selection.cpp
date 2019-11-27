@@ -19,8 +19,8 @@ void selection()
 	vector<string> studentNameVector; 
 	vector<string> prizeWinnerVector; 
 	string line; 
-	string tempPrizeArray[5]; 
-	string tempStudentArray[5];
+	vector<string> tempPrizeArray(5); 
+	vector<string> tempStudentArray(5);
 
 	//check if files are valid before proceeding; print some kind of message if there's an error
 	if (!prizes || !student_names || !winners)
@@ -35,7 +35,7 @@ void selection()
 			if (line.size() > 0)
 			{
 				prizeVector.push_back(line);
-				//cout << line << endl; 
+				//cout << prizeVector.size() << endl;
 			}
 		}
 
@@ -44,7 +44,7 @@ void selection()
 			if (line.size() > 0)
 			{
 				studentNameVector.push_back(line);
-				//cout << line << endl;
+				//cout << studentNameVector.size() << endl;
 			}
 		}
 
@@ -53,30 +53,39 @@ void selection()
 			if (line.size() > 0)
 			{
 				prizeWinnerVector.push_back(line);
-				//cout << line << endl;
+				//cout << prizeWinnerVector.size() << endl;
 			}
 		}
 
 		//find 5 random winners
 		for (int i = 0; i < 5; i++)
 		{
-			//bool isSame = false;
-
-			//tempStudentArray[i] = studentNameVector[rand(static_cast<int>(time(0)))]; 
+			//pick a random index in the array and assign it to the tempStudentArray
 			tempStudentArray[i] = studentNameVector[rand() % studentNameVector.size()];
 
-			for (int j = 0; j < tempStudentArray->size(); j++)
+			//checking the entire tempStudentArray for duplicates
+			for (int j = 0; j < tempStudentArray.size(); j++)
 			{
+				//if the indexes don't equal one another and a duplicate is found
 				if ((j != i) && (tempStudentArray[j] == tempStudentArray[i]))
 				{
-					tempStudentArray[i] = pickAWinner(studentNameVector, tempStudentArray, i);
-					break;
+					//if there are fewer students in the room than there are indexes in the tempStudentArray
+					if(studentNameVector.size() < tempStudentArray.size())
+						//enter a blank value
+						tempStudentArray[i] = "null"; 
+					else
+					{
+						//otherwise, call pickAWinner function to get a new value
+						tempStudentArray[i] = pickAWinner(studentNameVector, tempStudentArray, i);
+						break;
+					}
 				}
 
 				else
 					continue; 
 			}
 		}
+		//printing the values (for testing purposes)
 		for (int i = 0; i < 5; i++)
 			cout << tempStudentArray[i] << endl;
 
@@ -105,7 +114,10 @@ void selection()
 	}
 }
 
-string pickAWinner(vector<string> vec, string array[], int index)
+/*
+This function will loop through the studentNameVector until a unique name is located
+*/
+string pickAWinner(vector<string> vec, vector<string> array, int index)
 {
 	bool isSame = false; 
 
@@ -113,7 +125,7 @@ string pickAWinner(vector<string> vec, string array[], int index)
 	{
 		array[index] = vec[rand() % vec.size()];
 		
-		for (int i = 0; i < array->size(); i++)
+		for (int i = 0; i < array.size(); i++)
 		{
 			if ((index != i) && array[index] == array[i])
 				isSame = true; 
