@@ -59,7 +59,7 @@ void selection()
 		}
 
 		//find 5 random winners
-		for (int i = 0; i < 5; i++)
+		/*for (int i = 0; i < 5; i++)
 		{
 			bool isSame = false;
 			string temp = studentNameVector[rand() % studentNameVector.size()];
@@ -83,6 +83,45 @@ void selection()
 				temp = studentNameVector[rand() % studentNameVector.size()];
 			}
 			//cout << tempStudentArray[i] << endl;
+		}*/
+		
+		for (int i = 0; i < 5; i++)
+		{
+			tempStudentArray[i] = studentNameVector[rand() % studentNameVector.size()];
+			//cout << "Generate a name: " << tempStudentArray[i] << endl;
+			if (i == 0) {
+				while (tempStudentArray[i] == tempStudentArray[1] || tempStudentArray[i] == tempStudentArray[2] || tempStudentArray[i] == tempStudentArray[3] || tempStudentArray[i] == tempStudentArray[4]) {
+					tempStudentArray[i] = studentNameVector[rand() % studentNameVector.size()];
+				}
+			}
+			else if (i == 1) {
+				while (tempStudentArray[i] == tempStudentArray[0] || tempStudentArray[i] == tempStudentArray[2] || tempStudentArray[i] == tempStudentArray[3] || tempStudentArray[i] == tempStudentArray[4]) {
+					tempStudentArray[i] = studentNameVector[rand() % studentNameVector.size()];
+				}
+			}
+			else if (i == 2) {
+				while (tempStudentArray[i] == tempStudentArray[0] || tempStudentArray[i] == tempStudentArray[1] || tempStudentArray[i] == tempStudentArray[3] || tempStudentArray[i] == tempStudentArray[4]) {
+					tempStudentArray[i] = studentNameVector[rand() % studentNameVector.size()];
+				}
+			}
+			else if (i == 3) {
+				while (tempStudentArray[i] == tempStudentArray[0] || tempStudentArray[i] == tempStudentArray[1] || tempStudentArray[i] == tempStudentArray[2] || tempStudentArray[i] == tempStudentArray[4]) {
+					tempStudentArray[i] = studentNameVector[rand() % studentNameVector.size()];
+				}
+			}
+			else if (i == 4) {
+				//Cause problems when names are less than 5
+				if (student_names && student_names.peek() == EOF) {
+					//cout << "Only have " << (i - 1) << " people in the file!" << endl;
+					tempStudentArray[i] = "";
+				}
+				else {
+					while (tempStudentArray[i] == tempStudentArray[0] || tempStudentArray[i] == tempStudentArray[1] || tempStudentArray[i] == tempStudentArray[2] || tempStudentArray[i] == tempStudentArray[3]) {
+						tempStudentArray[i] = studentNameVector[rand() % studentNameVector.size()];
+					}
+				}
+
+			}
 		}
 		
 
