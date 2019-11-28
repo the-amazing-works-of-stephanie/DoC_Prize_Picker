@@ -20,8 +20,9 @@ void selection()
 	vector<string> studentNameVector;
 	vector<string> prizeWinnerVector;
 	string line;
-	string tempPrizeArray[5];
-	string tempStudentArray[5];
+	const int genNum = 5;
+	string tempPrizeArray[genNum];
+	string tempStudentArray[genNum];
 
 	//check if files are valid before proceeding; print some kind of message if there's an error
 	if (!prizes || !student_names || !winners)
@@ -58,72 +59,77 @@ void selection()
 			}
 		}
 
-		//find 5 random winners
-		/*for (int i = 0; i < 5; i++)
+		//Find 5 random winners
+		for (int i = 0; i < genNum; i++)
 		{
-			bool isSame = false;
-			string temp = studentNameVector[rand() % studentNameVector.size()];
-
-			for (int j = 0; j < 5; j++)
-			{
-				if (temp == tempStudentArray[j])
-				{
-					isSame = true;
-					break;
-				}
-			}
-
-
-
-			if (isSame != true) {
-				tempStudentArray[i] = temp;
-				cout << tempStudentArray[i] << endl;
-			}
-			else {
-				temp = studentNameVector[rand() % studentNameVector.size()];
-			}
-			//cout << tempStudentArray[i] << endl;
-		}*/
-		
-		for (int i = 0; i < 5; i++)
-		{
+			//pick a random index in the array and assign it to the tempStudentArray
 			tempStudentArray[i] = studentNameVector[rand() % studentNameVector.size()];
-			//cout << "Generate a name: " << tempStudentArray[i] << endl;
-			if (i == 0) {
-				while (tempStudentArray[i] == tempStudentArray[1] || tempStudentArray[i] == tempStudentArray[2] || tempStudentArray[i] == tempStudentArray[3] || tempStudentArray[i] == tempStudentArray[4]) {
-					tempStudentArray[i] = studentNameVector[rand() % studentNameVector.size()];
-				}
-			}
-			else if (i == 1) {
-				while (tempStudentArray[i] == tempStudentArray[0] || tempStudentArray[i] == tempStudentArray[2] || tempStudentArray[i] == tempStudentArray[3] || tempStudentArray[i] == tempStudentArray[4]) {
-					tempStudentArray[i] = studentNameVector[rand() % studentNameVector.size()];
-				}
-			}
-			else if (i == 2) {
-				while (tempStudentArray[i] == tempStudentArray[0] || tempStudentArray[i] == tempStudentArray[1] || tempStudentArray[i] == tempStudentArray[3] || tempStudentArray[i] == tempStudentArray[4]) {
-					tempStudentArray[i] = studentNameVector[rand() % studentNameVector.size()];
-				}
-			}
-			else if (i == 3) {
-				while (tempStudentArray[i] == tempStudentArray[0] || tempStudentArray[i] == tempStudentArray[1] || tempStudentArray[i] == tempStudentArray[2] || tempStudentArray[i] == tempStudentArray[4]) {
-					tempStudentArray[i] = studentNameVector[rand() % studentNameVector.size()];
-				}
-			}
-			else if (i == 4) {
-				//Cause problems when names are less than 5
-				if (student_names && student_names.peek() == EOF) {
-					//cout << "Only have " << (i - 1) << " people in the file!" << endl;
-					tempStudentArray[i] = "";
-				}
-				else {
-					while (tempStudentArray[i] == tempStudentArray[0] || tempStudentArray[i] == tempStudentArray[1] || tempStudentArray[i] == tempStudentArray[2] || tempStudentArray[i] == tempStudentArray[3]) {
-						tempStudentArray[i] = studentNameVector[rand() % studentNameVector.size()];
+
+			//checking the entire tempStudentArray for duplicates
+			for (int j = 0; j < genNum; j++)
+			{
+				//if the indexes don't equal one another and a duplicate is found
+				if ((j != i) && (tempStudentArray[j] == tempStudentArray[i]))
+				{
+					//if there are fewer students in the room than there are indexes in the tempStudentArray
+					if (studentNameVector.size() < genNum)
+						//enter a blank value
+						tempStudentArray[i] = "null";
+					else
+					{
+						//otherwise, call generateAgain function to get a new value
+						tempStudentArray[i] = generateAgain(studentNameVector, tempStudentArray, i);
+						break;
 					}
 				}
-
+				else
+					continue;
 			}
 		}
-		
+		//Display the 5 names
+		cout << "Generate 5 names: " << endl;
+		for (int i = 0; i < genNum; i++) {
+			cout << (i + 1) << ". " << tempStudentArray[i] << endl;
+		}
+		cout << endl;
+
+
+		//Find 5 random prizes
+		for (int i = 0; i < genNum; i++) {
+			tempPrizeArray[i] = prizeVector[rand() % prizeVector.size()];
+
+			for (int j = 0; j < genNum; j++) {
+				if (i != j) {
+					if (tempPrizeArray[i] == tempPrizeArray[j]) {
+						if (prizeVector.size() < genNum) {
+							tempPrizeArray[i] = "null";
+						}
+						else {
+							tempPrizeArray[i] = generateAgain(prizeVector, tempPrizeArray, i);
+							break;
+						}
+					}
+				}
+			}
+		}
+		//Display the 5 prizes
+		cout << "Generate 5 prizes: " << endl;
+		for (int i = 0; i < genNum; i++) {
+			cout << (i+1) << ". " << tempPrizeArray[i] << endl;
+		}
+		cout << endl;
+
+		ofstream prizes1;
+		prizes1.open("prizes1.txt");
+		while (getline(prizes, line)) {
+			int i = 0;
+			if (line != tempPrizeArray[i])
+				prizes1 << line << endl;
+		}
+		remove("prizes1.txt");
+		rename("prizes1.txt", "prizes1.txt");
+
+
 
 		//step 1: prizeVector[distrForPrizes]; 
 		//step 2: check if the called prize is in the temp array
@@ -147,4 +153,24 @@ void selection()
 
 		//return 5 winners & 5 prizes
 	}
+}
+
+ string generateAgain(vector<string> vec, string array[], int index)
+{
+	bool isSame = false;
+
+	do
+	{
+		array[index] = vec[rand() % vec.size()];
+
+		for (int i = 0; i < 5; i++)
+		{
+			if ((index != i) && array[index] == array[i])
+				isSame = true;
+		}
+
+	} while (isSame == true);
+
+	if (isSame == false)
+		return array[index];
 }
