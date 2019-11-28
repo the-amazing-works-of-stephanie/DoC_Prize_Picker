@@ -86,6 +86,32 @@ void selection()
 					continue;
 			}
 		}
+
+		//Erase the names from studentNames.txt file
+		/*for (int i = 0; i < genNum; i++) {
+			studentNameVector.erase(std::remove(studentNameVector.begin(), studentNameVector.end(), tempStudentArray[i]), studentNameVector.end());
+		}
+		
+		for (auto t = studentNameVector.begin(); t != studentNameVector.end(); ++t)
+			std::cout << "vector names: "<< *t << '\n';
+
+
+		ofstream newNames;
+		newNames.open("studentNames.txt", ios::app);
+		for (auto t = studentNameVector.begin(); t != studentNameVector.end(); ++t)
+		{
+			newNames << *t << '\n';
+		}*/
+
+		/*string nameFileContenet = "";
+		char ch;
+		while (student_names >> std::noskipws >> ch) {
+			nameFileContenet += ch;
+		}
+		cout << "File content: " << nameFileContenet << endl;*/
+
+		
+
 		//Display the 5 names
 		cout << "Generate 5 names: " << endl;
 		for (int i = 0; i < genNum; i++) {
@@ -119,7 +145,7 @@ void selection()
 		}
 		cout << endl;
 
-		ofstream prizes1;
+		/*ofstream prizes1;
 		prizes1.open("prizes1.txt");
 		while (getline(prizes, line)) {
 			int i = 0;
@@ -128,6 +154,53 @@ void selection()
 		}
 		remove("prizes1.txt");
 		rename("prizes1.txt", "prizes1.txt");
+		*/
+
+		//Save the names and prizes into prizeWinners.txt
+		ofstream winnerList;
+		winnerList.open("prizeWinners.txt", ios::app);
+		for (int i = 0; i < genNum; i++)
+		{
+			winnerList << tempStudentArray[i] << ": " << tempPrizeArray[i] << endl;
+		}
+		
+
+		//Renmove the names and prizes from the text files
+
+
+		/*student_names.open("studentNames.txt");
+		string l;
+		ofstream temp;
+		temp.open("newNames.txt");
+		string deleteN = "Alex";
+		
+		while (getline(student_names, l))
+		{
+			
+				l.replace(l.find(deleteN), deleteN.length(), "");
+				temp << l << endl;
+			
+		}
+		
+
+		temp.close();
+		student_names.close();
+		remove("studentNames.txt");
+		rename("newNames.txt", "studentNames.txt");*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
