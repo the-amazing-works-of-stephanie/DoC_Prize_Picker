@@ -106,7 +106,10 @@ void selection()
 			for (int j = 0; j < prizeWinnerVector.size(); j++)
 			{
 				if (tempStudentArray[i] == prizeWinnerVector[j])
+				{
+					cout << "There is a duplicate: " + prizeWinnerVector[j] << endl;
 					tempStudentArray[i] = studentNameVector[rand() % studentNameVector.size()];
+				}
 				else
 					continue; 
 			}
@@ -128,6 +131,8 @@ void selection()
 			student_names << *t << '\n';
 		}
 		
+		winners.close();
+		student_names.close(); 
 		
 		//find 5 random prizes
 		for (int i = 0; i < NUM; i++) 
@@ -151,26 +156,38 @@ void selection()
 			}
 		}
 
-		//Display the 5 prizes
-		/*cout << "Generate 5 prizes: " << endl;
-		for (int i = 0; i < NUM; i++) {
-			cout << (i + 1) << ". " << tempPrizeArray[i] << endl;
-		}*/
+		for (int i = 0; i < NUM; i++)
+		{
+			//loops through prizeVector to find each item in tempPrizeArray, then deletes it from prizeVector
+			vector<string>::iterator position2 = find(prizeVector.begin(), prizeVector.end(), tempPrizeArray[i]);
+			if (position2 != prizeVector.end())
+				prizeVector.erase(position2);
+		}
 
-		//write the prize into the 'prizeWinners' file
-		//delete the prize from the 'prizes' file
+		//open the prizeWinners file for writing
+		winners.open("prizeWinners.txt", ios::app);
+		//loops through tempPrizeArray and writes each prize into the prizeWinners file
+		for (auto t = tempPrizeArray.begin(); t != tempPrizeArray.end(); ++t)
+		{
+			winners << *t << '\n';
+		}
 
-		//write vectors into files
+		//open the prize file for writing -- empty contents
+		prizes.open("prizes1.txt", ios::out);
+		//loops through prizeVector and writes each item into the prizes file
+		for (auto t = prizeVector.begin(); t != prizeVector.end(); ++t)
+		{
+			prizes << *t << '\n';
+		}
 
 		//close files
-		//prizes.close();
-		student_names.close();
+		prizes.close();
 		winners.close();
 
 		//print out the winners and their prizes
 		for (int i = 0; i < NUM; i++)
 		{
-			cout << i+1 + ". " << tempStudentArray[i] + " will receive " + tempPrizeArray[i] + "!" << endl; 
+			cout << tempStudentArray[i] + " will receive " + tempPrizeArray[i] + "!" << endl; 
 		}
 	}
 }
